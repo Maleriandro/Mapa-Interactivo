@@ -9,9 +9,12 @@ streetViewModulo = (function () {
 
     // Actualiza la ubicación del Panorama
   function fijarStreetView (ubicacion) {
-        /* Completar la función fijarStreetView que actualiza la posición
-         de la variable panorama y cambia el mapa de modo tal que se vea
-         el streetView de la posición actual. */
+      /* Completar la función fijarStreetView que actualiza la posición
+        de la variable panorama y cambia el mapa de modo tal que se vea
+        el streetView de la posición actual. */
+        var elPanorama = document.getElementById('pano');
+
+        
   }
 
   return {

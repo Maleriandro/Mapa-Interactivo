@@ -5,11 +5,31 @@ lugaresModulo = (function () {
     // con un círculo cuyo radio es de 20000 metros.
   function autocompletar () {
     var radioDeBusqueda = 20000;
+    var centro = mapa.getCenter();
 
+    var circulo = new google.maps.Circle({
+      center: centro,
+      radius: radioDeBusqueda,
+      map: mapa
+    });
+
+    var limites = circulo.getBounds();
+
+    var inputsAutocompletados = [document.getElementById('direccion'),
+                                document.getElementById('desde'),
+                                document.getElementById('hasta'),
+                                document.getElementById('agregar')];
+
+    var opciones = {
+      bounds: limites,
+      map: map
+    }
+
+    var autocompletado1 = new google.maps.places.Autocomplete(inputsAutocompletados[0], opciones);
+    var autocompletado2 = new google.maps.places.Autocomplete(inputsAutocompletados[1], opciones);
+    var autocompletado3 = new google.maps.places.Autocomplete(inputsAutocompletados[2], opciones);
+    var autocompletado4 = new google.maps.places.Autocomplete(inputsAutocompletados[3], opciones);
     
-
-
-
         /* Completar la función autocompletar(): autocompleta los 4 campos de texto de la
         página (las direcciones ingresables por el usuario).
         Para esto creá un círculo con radio de 20000 metros y usalo para fijar
