@@ -3,7 +3,21 @@ geocodificadorModulo = (function () {
   
     // Permite obtener las coordenadas y las usa con la función llamada por parámtero
   function usaDireccion (direccion, funcionALlamar) {
-        /* Completar la función usaDireccion(dirección,funcionALlamar)
+    const direccionSolicitada = {address: direccion}
+
+
+    function callback(result, status) {
+      if (status === "OK") {
+        funcionALlamar(direccion, result[0].geometry.location);
+      } else {
+        alert('Ocurrió un error. Reintente más tarde.');
+        console.log(status);
+      }
+    }
+
+    geocodificador.geocode(direccionSolicitada, callback.bind(this));
+
+      /* Completar la función usaDireccion(dirección,funcionALlamar)
      para que se obtengan las coordenadas a partir de la dirección pasada por parámetro
      y que llame a la función pasada por parámetro con los siguientes parámetros
      dirección: la dirección pasada por parámetro
@@ -23,7 +37,7 @@ geocodificadorModulo = (function () {
       if (key === 13) { // 13 is enter
                 // code for enter
         var direccion = document.getElementById('direccion').value
-        that.usaDireccion(direccion, direccionesModulo.agregarDireccionYMostrarEnMapa)
+        that.usaDireccion(direccion,direccionesModulo.agregarDireccionYMostrarEnMapa)
       }
     })
   }
