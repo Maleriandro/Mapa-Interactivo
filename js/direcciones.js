@@ -92,8 +92,32 @@ direccionesModulo = (function () {
     // Calcula la ruta entre los puntos Desde y Hasta con los puntosIntermedios
     // dependiendo de la formaDeIr que puede ser Caminando, Auto o Bus/Subterraneo/Tren
   function calcularYMostrarRutas () {
+    var desde = $('#desde').val();
+    var hasta = $('#hasta').val();
+    var comoIr = $('#comoIr').val();
 
-        /* Completar la función calcularYMostrarRutas , que dependiendo de la forma en que el
+    // return desde;
+
+    servicioDirecciones  = new google.maps.DirectionsService();
+    mostradorDirecciones = new google.maps.DirectionsRenderer();
+    mostradorDirecciones.setMap(mapa);
+
+
+    if (desde === '' || hasta === '') {
+      alert('Por favor ingrese una dirección de salida y una de llegada.');
+
+      if (desde === '') {
+        console.log('Se esperaba que "desde" tuviera algún valor');
+      } else {
+        console.log('Se esperaba que "hasta" tuviera algún valor');
+      }
+      return;
+    }
+
+    // TODO: COMPLETAR PARA CONSGUIR GUIA DE VIAJE
+
+
+          /* Completar la función calcularYMostrarRutas , que dependiendo de la forma en que el
          usuario quiere ir de un camino al otro, calcula la ruta entre esas dos posiciones
          y luego muestra la ruta. */
   }

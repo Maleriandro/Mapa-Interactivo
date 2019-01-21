@@ -1,8 +1,8 @@
 var mapa // Mapa que vamos a modificar
 
 var posicionCentral = {
-  lat: -34.673013,
-  lng: -58.473898
+  lat: -34.67312823795221,
+  lng: -58.47391129343055
 }
 
 /* Crear la variable posicionCentral con las coordenadas donde se va a centrar el mapa */

@@ -10,7 +10,9 @@ lugaresModulo = (function () {
     var circulo = new google.maps.Circle({
       center: centro,
       radius: radioDeBusqueda,
-      map: mapa
+      map: mapa,
+      strokeOpacity: 0,
+      fillOpacity: 0
     });
 
     var limites = circulo.getBounds();
