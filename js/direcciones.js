@@ -95,26 +95,51 @@ direccionesModulo = (function () {
     var desde = $('#desde').val();
     var hasta = $('#hasta').val();
     var comoIr = $('#comoIr').val();
+    var panelDescripcion = $('.directions');
 
-    // return desde;
+    panelDescripcion.empty();
+    
+    if (desde === '' || hasta === '') {
+      alert('Por favor ingrese una dirección de salida y una de llegada.');
+      return;
+    }
+    
+    var transporte;
+    switch (comoIr) {
+      case 'Auto':
+        transporte = 'DRIVING';
+        break;
+    
+      case 'Caminando':
+        transporte = 'WALKING';
+        break;
+    
+      case 'Bus/Subterraneo/Tren':
+        transporte = 'TRANSIT';
+         break;
+    
+      default:
+        break;
+    }
+
 
     servicioDirecciones  = new google.maps.DirectionsService();
     mostradorDirecciones = new google.maps.DirectionsRenderer();
     mostradorDirecciones.setMap(mapa);
 
+    var peticion = {
+      origin: desde,
+      destination: hasta,
+      travelMode: transporte
+  };
 
-    if (desde === '' || hasta === '') {
-      alert('Por favor ingrese una dirección de salida y una de llegada.');
-
-      if (desde === '') {
-        console.log('Se esperaba que "desde" tuviera algún valor');
-      } else {
-        console.log('Se esperaba que "hasta" tuviera algún valor');
-      }
-      return;
+  servicioDirecciones.route(peticion, function(result, status) {
+    if (status == 'OK') {
+      mostradorDirecciones.setDirections(result);
+      mostradorDirecciones.setPanel(panelDescripcion[0]);
+      // TODO: ELIMINAR VIAJE ANTERIOR
     }
-
-    // TODO: COMPLETAR PARA CONSGUIR GUIA DE VIAJE
+  });
 
 
           /* Completar la función calcularYMostrarRutas , que dependiendo de la forma en que el
