@@ -51,6 +51,7 @@ output {
     border: solid 1px #4b858a;
     color: #4b858a;
     background: transparent;
+    margin-top: 5px;
 }
 
 .btn-outline:hover {
@@ -60,10 +61,6 @@ output {
 .btn:hover {
     background: #285e63;
     color: #d2e6e8;
-}
-
-.btn-outline:last-child {
-    margin-top: 5px;
 }
 
 .from-to {
@@ -301,7 +298,7 @@ label {
 .directions {
     margin-top: 15px;
     overflow-y: scroll;
-    height: calc(100% - 478px);
+    height: calc(100% - 537px);
     font-size: 13px;
 }
 

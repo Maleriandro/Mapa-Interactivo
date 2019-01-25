@@ -5,7 +5,13 @@ direccionesModulo = (function () {
     // Calcula las rutas cuando se cambian los lugares de desde, hasta o algun punto intermedio
   function calcularRutasConClic () {
     document.getElementById('comoIr').addEventListener('change', function () {
-      direccionesModulo.calcularYMostrarRutas()
+      if (mostradorDirecciones.getDirections() !== undefined) {
+        direccionesModulo.calcularYMostrarRutas()
+      }
+    })
+
+    document.getElementById('eliminarRuta').addEventListener('click', function() {
+      direccionesModulo.eliminarRuta();
     })
 
     document.getElementById('calcularMuchos').addEventListener('click', function () {
@@ -97,7 +103,6 @@ direccionesModulo = (function () {
     var comoIr = $('#comoIr').val();
     var panelDescripcion = $('.directions');
 
-    panelDescripcion.empty();
     
     if (desde === '' || hasta === '') {
       alert('Por favor ingrese una dirección de salida y una de llegada.');
@@ -122,22 +127,36 @@ direccionesModulo = (function () {
         break;
     }
 
+    var waypts = [];
+
+    var checkboxArray = document.getElementById('puntosIntermedios');
+    for (var i = 0; i < checkboxArray.length; i++) {
+      if (checkboxArray.options[i].selected) {
+        waypts.push({
+        location: checkboxArray[i].text,
+        stopover: true
+        });
+      }
+    }
+    
+    mostradorDirecciones.set('directions', null);
 
     servicioDirecciones  = new google.maps.DirectionsService();
     mostradorDirecciones = new google.maps.DirectionsRenderer();
-    mostradorDirecciones.setMap(mapa);
 
+    mostradorDirecciones.setMap(mapa);
+    
     var peticion = {
       origin: desde,
       destination: hasta,
-      travelMode: transporte
-  };
-
-  servicioDirecciones.route(peticion, function(result, status) {
-    if (status == 'OK') {
+      travelMode: transporte,
+      waypoints: waypts
+    };
+    
+    servicioDirecciones.route(peticion, function(result, status) {
+      if (status == 'OK') {
       mostradorDirecciones.setDirections(result);
       mostradorDirecciones.setPanel(panelDescripcion[0]);
-      // TODO: ELIMINAR VIAJE ANTERIOR
     }
   });
 
@@ -147,11 +166,18 @@ direccionesModulo = (function () {
          y luego muestra la ruta. */
   }
 
+  function eliminarRuta() {
+    mostradorDirecciones.set('directions', null);
+    $('#desde').val(null);
+    $('#hasta').val(null);
+  }
+
   return {
     inicializar,
     agregarDireccion,
     agregarDireccionEnLista,
     agregarDireccionYMostrarEnMapa,
-    calcularYMostrarRutas
+    calcularYMostrarRutas,
+    eliminarRuta
   }
 }())
