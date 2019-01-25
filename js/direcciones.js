@@ -170,6 +170,8 @@ direccionesModulo = (function () {
     mostradorDirecciones.set('directions', null);
     $('#desde').val(null);
     $('#hasta').val(null);
+    $('#agregar').val(null);
+    $('#puntosIntermedios').empty();
   }
 
   return {

@@ -17,6 +17,7 @@ lugaresModulo = (function () {
 
     var limites = circulo.getBounds();
 
+
     var inputsAutocompletados = [document.getElementById('direccion'),
                                 document.getElementById('desde'),
                                 document.getElementById('hasta'),
@@ -24,6 +25,7 @@ lugaresModulo = (function () {
 
     var opciones = {
       bounds: limites,
+      strictBounds: true,
       map: map
     }
 
@@ -50,6 +52,10 @@ lugaresModulo = (function () {
     var radio = document.getElementById('radio').value;
     var tipoDeLugar = document.getElementById('tipoDeLugar').value;
 
+    if (tipoDeLugar === "null") {
+      return;
+    }
+
     servicioLugares = new google.maps.places.PlacesService(mapa);
 
     var request = {
@@ -59,7 +65,36 @@ lugaresModulo = (function () {
     };
 
     function callback(result, status) {
+      if (status === "OK") {
+        console.log('La operacion se realizó con exito');
         marcadorModulo.marcarLugares(result, status);
+      } else if (status === "ZERO_RESULTS") {
+
+        swal({
+          type: "info",
+          title: 'No se encontró ningun lugar cercano',
+          text: 'Intente ampliar el radio de busqueda',
+          timer: 3000
+          });
+      } else if (status === "INVALID_REQUEST") {
+        console.log('No se ingresó ninguna dirección');
+      } else if (status === "UNKNOWN_ERROR" || status === "ERROR") {
+
+        swal({
+          type: "warning",
+          title: 'Hubo un error en el Servidor',
+          text: 'Intente reiniciando la página.',
+          timer: 3000
+          });
+      } else {
+
+        swal({
+          type: "error",
+          title: 'Servidor muy ocupado',
+          text: 'Intenté usar nuestra web mañana.',
+          timer: 3000
+          });
+      }
     }
 
     servicioLugares.nearbySearch(request, callback.bind(this));

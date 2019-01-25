@@ -22,4 +22,9 @@ function inicializarMapa () {
   direccionesModulo.inicializar()
   lugaresModulo.inicializar()
   streetViewModulo.inicializar()
+
+  
 }
+
+
+

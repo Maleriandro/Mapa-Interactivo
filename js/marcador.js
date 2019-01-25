@@ -7,12 +7,19 @@ marcadorModulo = (function () {
 
     // Crea un marcador y lo muestra en el mapa
   function mostrarMiMarcador (ubicacion) {
-    var miMarcador = new google.maps.Marker({
+    if (miMarcador !== null && miMarcador !== undefined) {
+      miMarcador.setMap(null);
+      miMarcador = null;
+    }
+
+    miMarcador = new google.maps.Marker({
       position: ubicacion,
       map: mapa,
       animation: google.maps.Animation.DROP,
       title: 'Mi marcador'
     });
+
+    // marcadores.push(miMarcador);
         /* Completar la función mostrarMiMarcador() para crear un marcador
         en la posición pasada por parámetro y mostrarlo en el mapa.
         Este marcador debe tener un título, una animación.
@@ -177,7 +184,11 @@ marcadorModulo = (function () {
 
     // Devuelve la posicion de la variable miMarcador
   function damePosicion () {
-    return miMarcador.getPosition()
+    if (miMarcador !== null && miMarcador !== undefined) {
+      return miMarcador.getPosition()
+    } else {
+      return mapa.getCenter()
+    }
   }
 
     // Agrego el marcador con la ruta. Le asigna las letras correspondientes al marcador.
@@ -250,3 +261,4 @@ marcadorModulo = (function () {
     marcar
   }
 })()
+

@@ -5,14 +5,38 @@ geocodificadorModulo = (function () {
   function usaDireccion (direccion, funcionALlamar) {
     const direccionSolicitada = {address: direccion}
 
-
     function callback(result, status) {
       if (status === "OK") {
+        console.log('La operación se realizó con exito');
         funcionALlamar(direccion, result[0].geometry.location);
+      } else if (status === "ZERO_RESULTS") {
+
+        swal({
+          type: "warning",
+          title: 'Oops',
+          text: 'No se encontró el lugar que buscabas.',
+          timer: 2500
+          });
+      } else if (status === "INVALID_REQUEST") {
+        console.log('No se ingresó ninguna dirección');
+      } else if (status === "UNKNOWN_ERROR" || status === "ERROR") {
+
+        swal({
+          type: "warning",
+          title: 'Hubo un error en el Servidor',
+          text: 'Intente reiniciando la pagina',
+          timer: 3000
+          });
       } else {
-        alert('Ocurrió un error. Reintente más tarde.');
-        console.log(status);
+
+        swal({
+          type: "error",
+          title: 'Servidor muy ocupado',
+          text: 'Intenté usar nuestra web mañana.',
+          timer: 3000
+          });
       }
+      
     }
 
     geocodificador.geocode(direccionSolicitada, callback.bind(this));
