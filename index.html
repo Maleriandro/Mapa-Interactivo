@@ -89,13 +89,13 @@
     </div>
     <div id="map"></div>
     <div id="pano"></div>
-    <!-- <script src='js/geocodificador.js'></script>
-    <script src='js/marcador.js'></script>
-    <script src='js/streetView.js'></script>
-    <script src='js/direcciones.js'></script>
-    <script src='js/lugares.js'></script>
-    <script src='js/ayuda.js'></script>
-    <script src='js/apis.js'></script> -->
+    <!-- <script src='js/geocodificador.js'></script> -->
+    <!-- <script src='js/marcador.js'></script> -->
+    <!-- <script src='js/streetView.js'></script> -->
+    <!-- <script src='js/direcciones.js'></script> -->
+    <!-- <script src='js/lugares.js'></script> -->
+    <!-- <script src='js/ayuda.js'></script> -->
+    <script src='js/apis.js'></script>
     <!-- Modificá "CLAVEAPI" por la clave que hayas obtenido -->
       <!-- API MIA   <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCLN-mYmoR6SMFCHVlj3vx-lob6wOqhQ20&libraries=places&callback=inicializarMapa" async defer></script> -->
     <!-- API ACAMICA --> <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBhtHaRcMH57OPY8xdAjBlD8RaEWV7HbhI&libraries=places&callback=inicializarMapa" async defer></script> -->
@@ -103,18 +103,7 @@
     <script src="js/SmoothWheelZoom.js"></script>
 
     <script>
-        var map = L.map('map', 
-            {
-                scrollWheelZoom: false,
-                smoothWeelZoom: true,
-                smoothSensitivity: 1,
-            }
-        ).setView([-34.603722, -58.381592], 13);
-    
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+        inicializarMapa();
     </script>
 
 

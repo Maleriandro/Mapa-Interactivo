@@ -9,19 +9,25 @@ var posicionCentral = {
 
 // Inicializa el mapa con un valor de zoom y una locación en el medio
 function inicializarMapa () {
-  mapa = new google.maps.Map(document.getElementById("map"), {
+  mapa = L.map('map', {
     center: posicionCentral,
-    zoom: 13
-  });
-    /* Modificá la variable mapa con el constructor Map().
-    Tendrás que asignarle un valor de zoom y
-    un centro igual a la variable posicionCentral. */
+    zoom: 13,
+    scrollWheelZoom: false,
+    smoothWheelZoom: true,
+    smoothSensitivity: 1
+  })
 
-  geocodificadorModulo.inicializar()
-  marcadorModulo.inicializar()
-  direccionesModulo.inicializar()
-  lugaresModulo.inicializar()
-  streetViewModulo.inicializar()
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(mapa);
+
+
+  // geocodificadorModulo.inicializar()
+  // marcadorModulo.inicializar()
+  // direccionesModulo.inicializar()
+  // lugaresModulo.inicializar()
+  // streetViewModulo.inicializar()
 
   
 }
