@@ -10,6 +10,14 @@
     <link rel="stylesheet" type="text/css" href="css/miEstilo.css">
     <script src="js/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 </head>
 
 <body>
@@ -81,16 +89,34 @@
     </div>
     <div id="map"></div>
     <div id="pano"></div>
-    <script src='js/geocodificador.js'></script>
+    <!-- <script src='js/geocodificador.js'></script>
     <script src='js/marcador.js'></script>
     <script src='js/streetView.js'></script>
     <script src='js/direcciones.js'></script>
     <script src='js/lugares.js'></script>
     <script src='js/ayuda.js'></script>
-    <script src='js/apis.js'></script>
+    <script src='js/apis.js'></script> -->
     <!-- Modificá "CLAVEAPI" por la clave que hayas obtenido -->
       <!-- API MIA   <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCLN-mYmoR6SMFCHVlj3vx-lob6wOqhQ20&libraries=places&callback=inicializarMapa" async defer></script> -->
-    <!-- API ACAMICA --> <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBhtHaRcMH57OPY8xdAjBlD8RaEWV7HbhI&libraries=places&callback=inicializarMapa" async defer></script>
+    <!-- API ACAMICA --> <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBhtHaRcMH57OPY8xdAjBlD8RaEWV7HbhI&libraries=places&callback=inicializarMapa" async defer></script> -->
+
+    <script src="js/SmoothWheelZoom.js"></script>
+
+    <script>
+        var map = L.map('map', 
+            {
+                scrollWheelZoom: false,
+                smoothWeelZoom: true,
+                smoothSensitivity: 1,
+            }
+        ).setView([-34.603722, -58.381592], 13);
+    
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+    </script>
+
 
 </body>
 
