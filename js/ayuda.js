@@ -33,7 +33,7 @@ function mostrarValor (n) {
   document.querySelector('#radioS').value = n + ' mts'
 }
 
-// los tipos de lugares de Google Maps
+// los tipos de lugares de OpenStreetMap
 var tiposDeLugares = [{
   value: 'accounting',
   text: 'Contabilidad'
@@ -324,7 +324,7 @@ var tiposDeLugares = [{
   text: 'Zoo'
 }]
 
-// Agregar en la lista de tipos de lugares todos los tipos de lugares posibles de Google Maps
+// Agregar en la lista de tipos de lugares todos los tipos de lugares posibles de OpenStreetMap
 $.each(tiposDeLugares, function (i, item) {
   $('#tipoDeLugar').append($('<option>', {
     value: item.value,

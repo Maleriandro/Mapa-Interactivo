@@ -8,16 +8,12 @@ marcadorModulo = (function () {
     // Crea un marcador y lo muestra en el mapa
   function mostrarMiMarcador (ubicacion) {
     if (miMarcador !== null && miMarcador !== undefined) {
-      miMarcador.setMap(null);
+      miMarcador.remove();
       miMarcador = null;
     }
 
-    miMarcador = new google.maps.Marker({
-      position: ubicacion,
-      map: mapa,
-      animation: google.maps.Animation.DROP,
-      title: 'Mi marcador'
-    });
+    miMarcador = new L.marker( ubicacion,{title: 'Mi marcador'});
+    miMarcador.addTo(mapa);
 
     // marcadores.push(miMarcador);
         /* Completar la función mostrarMiMarcador() para crear un marcador
@@ -28,15 +24,19 @@ marcadorModulo = (function () {
 
     // Agrega la dirección del marcador en la lista de Lugares Intermedios
   function agregarDireccionMarcador (marcador) {
-        // console.log(marcador.getPosition().lat() + ',' + marcador.getPosition().lng());
-    var marcadorLatLng = new google.maps.LatLng({ lat: marcador.getPosition().lat(), lng: marcador.getPosition().lng() })
+    var marcadorLatLng = marcador.getLatLng()
     direccionesModulo.agregarDireccion(marcador.getTitle(), marcadorLatLng)
   }
 
     // Agrega al mapa todos los marcadores.
   function marcadoresEnMapa (marcadores, mapa) {
     for (var i = 0; i < marcadores.length; i++) {
-      marcadores[i].setMap(mapa)
+      marcadores[i].remove();
+
+      if (mapa !== null) {
+        marcadores[i].addTo(mapa)
+      }
+
     }
   }
 
@@ -88,78 +88,80 @@ marcadorModulo = (function () {
 
     // Crea marcador que al hacer click muestra la información del lugar.
   crearMarcador = function (lugar) {
-    var icono = {
-      url: lugar.icon,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25)
-    }
+    //TODO: Generar icono custom
+    // var icono = {
+    //   url: lugar.icon,
+    //   size: new google.maps.Size(71, 71),
+    //   origin: new google.maps.Point(0, 0),
+    //   anchor: new google.maps.Point(17, 34),
+    //   scaledSize: new google.maps.Size(25, 25)
+    // }
 
-    var marcador = new google.maps.Marker({
-      map: mapa,
-      position: lugar.geometry.location,
-      title: lugar.name + '\n' + lugar.vicinity,
-      icon: icono
-    })
+    const ubicacion = {lat: lugar.lat, lng: lugar.lon};
+    var marcador = L.marker(ubicacion, {title: lugar.name + '\n' + lugar.address.road});
+    marcador.addTo(mapa);
+
     marcadores.push(marcador)
 
-    google.maps.event.addListener(marcador, 'dblclick', function () {
+    marcador.on('dblclick', function () {
       agregarDireccionMarcador(marcador)
     })
 
-    google.maps.event.addListener(marcador, 'rightclick', function () {
+    marcador.on("contextmenu", function () {
       var indice
       for (var i = 0; i < marcadores.length; i++) {
         if (marcadores[i] == marcador) {
-          marcadores[i].setMap(null)
+          marcadores[i].remove();
           indice = i
           marcadores.splice(indice, 1)
         }
       }
-    })
+    });
 
-        // Cuando haces clic sobre el marcador, muestra la foto,
-        // el nombre y la valuación del lugar si es que lo tienen.
-    var lugarLoc = lugar.geometry.location
-    google.maps.event.addListener(marcador, 'click', function () {
-      streetViewModulo.fijarStreetView(lugarLoc)
-      var valuacion = 'No tiene'
-      if (lugar.rating) {
-        valuacion = lugar.rating.toString()
-      }
 
-            // agrega información del lugar en la ventana del marcador
-      if (lugar.photos) {
-        var url = lugar.photos[0].getUrl({
-          'maxWidth': 80,
-          'maxHeight': 80
-        })
-      }
-      var nombre = lugar.name
-      var nombreLugar = lugar.vecinity
-      if (url) {
-        if (nombreLugar) {
-          infoVentana.setContent('<h3>' + nombre + '</h3>' + '<img src=' + url + '>' + '<p> Rating: ' + valuacion + '</p>' + '<p> Direccion: ' + nombreLugar + '</p>')
-        } else {
-          infoVentana.setContent('<h3>' + nombre + '</h3>' + '<img src=' + url + '>' + '<p> Rating: ' + valuacion + '</p>')
-        }
-      } else {
-        infoVentana.setContent('<h3>' + nombre + '</h3>')
-      }
+    //TODO: Agregar infoWindow
+    //     // Cuando haces clic sobre el marcador, muestra la foto,
+    //     // el nombre y la valuación del lugar si es que lo tienen.
+    // var lugarLoc = lugar.geometry.location
+    // google.maps.event.addListener(marcador, 'click', function () {
+    //   streetViewModulo.fijarStreetView(lugarLoc)
+    //   var valuacion = 'No tiene'
+    //   if (lugar.rating) {
+    //     valuacion = lugar.rating.toString()
+    //   }
 
-      infoVentana.open(mapa, this)
-    })
+    //         // agrega información del lugar en la ventana del marcador
+    //   if (lugar.photos) {
+    //     var url = lugar.photos[0].getUrl({
+    //       'maxWidth': 80,
+    //       'maxHeight': 80
+    //     })
+    //   }
+    //   var nombre = lugar.name
+    //   var nombreLugar = lugar.vecinity
+    //   if (url) {
+    //     if (nombreLugar) {
+    //       infoVentana.setContent('<h3>' + nombre + '</h3>' + '<img src=' + url + '>' + '<p> Rating: ' + valuacion + '</p>' + '<p> Direccion: ' + nombreLugar + '</p>')
+    //     } else {
+    //       infoVentana.setContent('<h3>' + nombre + '</h3>' + '<img src=' + url + '>' + '<p> Rating: ' + valuacion + '</p>')
+    //     }
+    //   } else {
+    //     infoVentana.setContent('<h3>' + nombre + '</h3>')
+    //   }
+
+    //   infoVentana.open(mapa, this)
+    // })
   }
 
     // Extiende los limites a partir del lugar que se agrega
   function extenderLimites (lugar) {
-    if (lugar.geometry.viewport) {
-      limites.union(lugar.geometry.viewport)
-    } else {
-      limites.extend(lugar.geometry.location)
-    }
-    mapa.fitBounds(limites)
+    //TODO: Extender limites
+    // if (lugar.geometry.viewport) {
+    //   limites.union(lugar.geometry.viewport)
+    // } else {
+    //   limites.extend(lugar.geometry.location)
+    // }
+    // mapa.fitBounds(limites)
   }
 
     // Creo un objeto InfoWindow que será la ventana donde se mostrará la información
@@ -173,8 +175,10 @@ marcadorModulo = (function () {
         marcadorModulo.mostrarMiMarcador()
       }
     })
-    infoVentana = new google.maps.InfoWindow()
-    limites = new google.maps.LatLngBounds()
+
+    //TODO: Agregar infoWindow
+    // infoVentana = new google.maps.InfoWindow()
+    // limites = new google.maps.LatLngBounds()
   }
 
     // Función que devuelve true si ya se declaro la variable miMarcador
@@ -185,7 +189,7 @@ marcadorModulo = (function () {
     // Devuelve la posicion de la variable miMarcador
   function damePosicion () {
     if (miMarcador !== null && miMarcador !== undefined) {
-      return miMarcador.getPosition()
+      return miMarcador.getLatLng()
     } else {
       return mapa.getCenter()
     }
@@ -202,19 +206,20 @@ marcadorModulo = (function () {
     }
 
     function agregarMarcadorConStreetView (direccion, ubicacion) {
-      var marcador = new google.maps.Marker({
-        map: mapa,
-        position: ubicacion,
-        label: letra,
-        animation: google.maps.Animation.DROP,
-        draggable: false,
-        zIndex: zIndice
+      //TODO: Agregar marcador con letra STREETVIEW
+      // var marcador = new google.maps.Marker({
+      //   map: mapa,
+      //   position: ubicacion,
+      //   label: letra,
+      //   animation: google.maps.Animation.DROP,
+      //   draggable: false,
+      //   zIndex: zIndice
 
-      })
-      limites.extend(ubicacion)
-      google.maps.event.addListener(marcador, 'click', function () {
-        streetViewModulo.fijarStreetView(marcador.position)
-      })
+      // })
+      // limites.extend(ubicacion)
+      // google.maps.event.addListener(marcador, 'click', function () {
+      //   streetViewModulo.fijarStreetView(marcador.position)
+      // })
 
       marcadoresRuta.push(marcador)
     }
@@ -225,7 +230,7 @@ marcadorModulo = (function () {
     // Marca los lugares que están en el arreglo resultados y
     // extiende los límites del mapa teniendo en cuenta los nuevos lugares
   function marcarLugares (resultados, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
+    if (status === "OK") {
       for (var i = 0; i < resultados.length; i++) {
         crearMarcador(resultados[i])
         extenderLimites(resultados[i])

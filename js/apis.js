@@ -23,11 +23,11 @@ function inicializarMapa () {
 }).addTo(mapa);
 
 
-  // geocodificadorModulo.inicializar()
-  // marcadorModulo.inicializar()
-  // direccionesModulo.inicializar()
-  // lugaresModulo.inicializar()
-  // streetViewModulo.inicializar()
+  geocodificadorModulo.inicializar()
+  marcadorModulo.inicializar()
+  direccionesModulo.inicializar()
+  lugaresModulo.inicializar()
+  streetViewModulo.inicializar()
 
   
 }

@@ -49,10 +49,10 @@ direccionesModulo = (function () {
     // Agrega la dirección en las listas de puntos intermedios y lo muestra con el street view
   function agregarDireccionYMostrarEnMapa (direccion, ubicacion) {
     that = this
-    var ubicacionTexto = ubicacion.lat() + ',' + ubicacion.lng()
+    var ubicacionTexto = ubicacion.lat + ',' + ubicacion.lng
     agregarDireccionEnLista(direccion, ubicacionTexto)
-    mapa.setCenter(ubicacion)
-    streetViewModulo.fijarStreetView(ubicacion)
+    mapa.flyTo(ubicacion)
+    // streetViewModulo.fijarStreetView(ubicacion) //TODO
     marcadorModulo.mostrarMiMarcador(ubicacion)
   }
 
@@ -60,7 +60,7 @@ direccionesModulo = (function () {
     that = this
     var ubicacionTexto = ubicacion.lat() + ',' + ubicacion.lng()
     agregarDireccionEnLista(direccion, ubicacionTexto)
-    mapa.setCenter(ubicacion)
+    mapa.flyTo(ubicacion)
   }
 
     // Inicializo las variables que muestra el panel y el que calcula las rutas//
@@ -86,13 +86,15 @@ direccionesModulo = (function () {
         direccionesModulo.calcularYMostrarRutas()
       }
     })
-    servicioDirecciones = new google.maps.DirectionsService()
-    mostradorDirecciones = new google.maps.DirectionsRenderer({
-      draggable: true,
-      map: mapa,
-      panel: document.getElementById('directions-panel-summary'),
-      suppressMarkers: true
-    })
+
+    //TODO: Agregar el servicio de direcciones
+    // servicioDirecciones = new google.maps.DirectionsService()
+    // mostradorDirecciones = new google.maps.DirectionsRenderer({
+    //   draggable: true,
+    //   map: mapa,
+    //   panel: document.getElementById('directions-panel-summary'),
+    //   suppressMarkers: true
+    // })
   }
 
     // Calcula la ruta entre los puntos Desde y Hasta con los puntosIntermedios
@@ -141,10 +143,12 @@ direccionesModulo = (function () {
     
     mostradorDirecciones.set('directions', null);
 
-    servicioDirecciones  = new google.maps.DirectionsService();
-    mostradorDirecciones = new google.maps.DirectionsRenderer();
+    //TODO: Agregar el servicio de direcciones
+    // servicioDirecciones  = new google.maps.DirectionsService();
+    // mostradorDirecciones = new google.maps.DirectionsRenderer();
 
-    mostradorDirecciones.setMap(mapa);
+    //Todo: Setmap
+    mostradorDirecciones.addTo(mapa);
     
     var peticion = {
       origin: desde,

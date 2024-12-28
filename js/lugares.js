@@ -7,13 +7,11 @@ lugaresModulo = (function () {
     var radioDeBusqueda = 20000;
     var centro = mapa.getCenter();
 
-    var circulo = new google.maps.Circle({
-      center: centro,
-      radius: radioDeBusqueda,
-      map: mapa,
-      strokeOpacity: 0,
+    var circulo = L.circle(centro, radioDeBusqueda, {
+      color: 'red',
+      fillColor: 'transparent',
       fillOpacity: 0
-    });
+    }).addTo(mapa);
 
     var limites = circulo.getBounds();
 
@@ -29,10 +27,11 @@ lugaresModulo = (function () {
       map: map
     }
 
-    var autocompletado1 = new google.maps.places.Autocomplete(inputsAutocompletados[0], opciones);
-    var autocompletado2 = new google.maps.places.Autocomplete(inputsAutocompletados[1], opciones);
-    var autocompletado3 = new google.maps.places.Autocomplete(inputsAutocompletados[2], opciones);
-    var autocompletado4 = new google.maps.places.Autocomplete(inputsAutocompletados[3], opciones);
+    //TODO: Agregar el servicio de lugares autocompletado
+    // var autocompletado1 = new google.maps.places.Autocomplete(inputsAutocompletados[0], opciones);
+    // var autocompletado2 = new google.maps.places.Autocomplete(inputsAutocompletados[1], opciones);
+    // var autocompletado3 = new google.maps.places.Autocomplete(inputsAutocompletados[2], opciones);
+    // var autocompletado4 = new google.maps.places.Autocomplete(inputsAutocompletados[3], opciones);
     
         /* Completar la función autocompletar(): autocompleta los 4 campos de texto de la
         página (las direcciones ingresables por el usuario).
@@ -42,11 +41,27 @@ lugaresModulo = (function () {
 
     // Inicializo la variable servicioLugares y llamo a la función autocompletar
   function inicializar () {
-    servicioLugares = new google.maps.places.PlacesService(mapa)
     autocompletar()
+  }
+  
+  function calculateSquare (center, radius) {
+    var lat = center.lat
+    var lng = center.lng
+
+    var lat_change = radius / 111300
+    var lng_change = radius / (111300 * Math.cos(lat * (Math.PI / 180)))
+
+    var square = {
+      lat1: lat - lat_change,
+      lng1: lng - lng_change,
+      lat2: lat + lat_change,
+      lng2: lng + lng_change
+    }
+    return square;
   }
 
     // Busca lugares con el tipo especificado en el campo de TipoDeLugar
+  
 
   function buscarCerca (posicion) {
     var radio = document.getElementById('radio').value;
@@ -56,7 +71,6 @@ lugaresModulo = (function () {
       return;
     }
 
-    servicioLugares = new google.maps.places.PlacesService(mapa);
 
     var request = {
       location: posicion,
@@ -97,7 +111,15 @@ lugaresModulo = (function () {
       }
     }
 
-    servicioLugares.nearbySearch(request, callback.bind(this));
+    const square = calculateSquare(posicion, radio);
+    
+    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + tipoDeLugar + '&viewbox=' + square.lng1 + ',' + square.lat1 + ',' + square.lng2 + ',' + square.lat2 + '&bounded=1&addressdetails=1&limit=40')
+    .then((response) => {
+      return response.json();
+    }).then((data) => {
+      callback(data, "OK");
+      return;
+    })
 
     /* Completar la función buscarCerca  que realice la búsqueda de los lugares
     del tipo (tipodeLugar) y con el radio indicados en el HTML cerca del lugar
